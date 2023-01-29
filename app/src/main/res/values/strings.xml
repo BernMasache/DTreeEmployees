@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">EMIS</string>
     <string name="employees">Employees</string>
+    <string name="search">Search</string>
 </resources>

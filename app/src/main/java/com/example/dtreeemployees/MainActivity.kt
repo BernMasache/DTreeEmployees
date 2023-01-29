@@ -21,28 +21,27 @@ class MainActivity : AppCompatActivity() {
     lateinit var employeeAdapter: EmployeeAdapter
     private var employee_recycler_view:RecyclerView?=null
     private var filteredEmployeeList:List<Employee>?=null
-    var search_id:Button?=null
-    var  searchEmployee:TextView?=null
+
+    var  searchEmployee:SearchView?=null
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        searchEmployee = findViewById<TextView>(R.id.search_employee)
-       search_id = findViewById<Button>(R.id.search_id)
+        searchEmployee = findViewById<SearchView>(R.id.search_employee)
         searchEmployee?.clearFocus()
-//        searchEmployee?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-//            override fun onQueryTextSubmit(query: String?): Boolean {
-//                return false
-//            }
-//            override fun onQueryTextChange(newText: String?): Boolean {
-//                searchEmployeeFunction(newText)
-//                return true
-//            }
-//        })
+        searchEmployee?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+            override fun onQueryTextChange(newText: String?): Boolean {
+                searchEmployeeFunction(newText)
+                return true
+            }
+        })
         employee_recycler_view = findViewById<RecyclerView>(R.id.employee_recycler_view)
         initRecyclerView()
         initViewModel()
-        searchEmp()
+
     }
 
     private fun searchEmployeeFunction(searchText: String?) {
@@ -76,38 +75,6 @@ class MainActivity : AppCompatActivity() {
             initViewModel()
         }
 
-    }
-
-    private fun searchEmp() {
-        val viewModel:EmployeeViewModel = ViewModelProvider(this)[EmployeeViewModel::class.java]
-
-
-        search_id?.setOnClickListener{
-            if (searchEmployee?.text?.isNotEmpty() == true){
-
-                viewModel.getLiveDataObserver().observe(this) {
-                    if (it != null) {
-
-                        for (item in it){
-
-                            if (item.NAME.lowercase().contains(searchEmployee?.text.toString().lowercase())){
-                                viewModel.searchEmployeeApiRequest(item._id.toString())
-                            }else{
-                            }
-                        }
-
-                    } else {
-                        EmployeeViewModel().apiRequest()
-                        initRecyclerView()
-                        initViewModel()
-                    }
-                }
-            }else{
-                EmployeeViewModel().apiRequest()
-                initRecyclerView()
-                initViewModel()
-            }
-        }
     }
 
     //    initialising the recyclerview
