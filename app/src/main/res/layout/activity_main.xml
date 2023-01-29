@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -25,14 +25,22 @@
             android:padding="20dp"
             />
     </androidx.cardview.widget.CardView>
-    <SearchView
-        android:layout_below="@+id/employee"
+<LinearLayout
+    android:orientation="horizontal"
+    android:layout_below="@+id/employee"
+    android:id="@+id/layout_id"
+    android:weightSum="100"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <EditText
+        android:inputType="text"
+        android:layout_weight="30"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-
         android:layout_marginTop="10dp"
         android:background="#F0EFF3"
         android:padding="5dp"
+        android:hint="search employ"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/search_employee"
@@ -40,8 +48,16 @@
         android:layout_marginBottom="10dp"
         />
 
+    <Button
+        android:layout_weight="70"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/search"
+        android:id="@+id/search_id"
+        />
+</LinearLayout>
     <androidx.recyclerview.widget.RecyclerView
-        android:layout_below="@+id/search_employee"
+        android:layout_below="@+id/layout_id"
         android:id="@+id/employee_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

@@ -8,6 +8,7 @@ import android.widget.SearchView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.core.view.isNotEmpty
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -20,36 +21,39 @@ class MainActivity : AppCompatActivity() {
     lateinit var employeeAdapter: EmployeeAdapter
     private var employee_recycler_view:RecyclerView?=null
     private var filteredEmployeeList:List<Employee>?=null
-
+    var search_id:Button?=null
+    var  searchEmployee:TextView?=null
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        val  searchEmployee = findViewById<SearchView>(R.id.search_employee)
-        searchEmployee.clearFocus()
-        searchEmployee.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                return false
-            }
-            override fun onQueryTextChange(newText: String?): Boolean {
-                searchEmployeeFunction(newText)
-                return true
-            }
-        })
+        searchEmployee = findViewById<TextView>(R.id.search_employee)
+       search_id = findViewById<Button>(R.id.search_id)
+        searchEmployee?.clearFocus()
+//        searchEmployee?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+//            override fun onQueryTextSubmit(query: String?): Boolean {
+//                return false
+//            }
+//            override fun onQueryTextChange(newText: String?): Boolean {
+//                searchEmployeeFunction(newText)
+//                return true
+//            }
+//        })
         employee_recycler_view = findViewById<RecyclerView>(R.id.employee_recycler_view)
         initRecyclerView()
         initViewModel()
+        searchEmp()
     }
 
-    private fun searchEmployeeFunction(text: String?) {
+    private fun searchEmployeeFunction(searchText: String?) {
 
-        if (text!!.isNotEmpty()){
-            var text = text!!.lowercase()
+        if (searchText!!.isNotEmpty()){
+            val text = searchText!!.lowercase()
 
             val viewModel:EmployeeViewModel = ViewModelProvider(this)[EmployeeViewModel::class.java]
             viewModel.getLiveDataObserver().observe(this) {
                 if (it != null) {
-                    var users = ArrayList<Employee>()
+                    val users = ArrayList<Employee>()
                     for (item in it){
 
                         if (item.NAME.lowercase().contains(text.lowercase())||item.SURNAME.lowercase().contains(text.lowercase())){
@@ -63,6 +67,7 @@ class MainActivity : AppCompatActivity() {
                     EmployeeViewModel().apiRequest()
                     initRecyclerView()
                     initViewModel()
+
                 }
             }
         }else{
@@ -72,7 +77,40 @@ class MainActivity : AppCompatActivity() {
         }
 
     }
-//    initialising the recyclerview
+
+    private fun searchEmp() {
+        val viewModel:EmployeeViewModel = ViewModelProvider(this)[EmployeeViewModel::class.java]
+
+
+        search_id?.setOnClickListener{
+            if (searchEmployee?.text?.isNotEmpty() == true){
+
+                viewModel.getLiveDataObserver().observe(this) {
+                    if (it != null) {
+
+                        for (item in it){
+
+                            if (item.NAME.lowercase().contains(searchEmployee?.text.toString().lowercase())){
+                                viewModel.searchEmployeeApiRequest(item._id.toString())
+                            }else{
+                            }
+                        }
+
+                    } else {
+                        EmployeeViewModel().apiRequest()
+                        initRecyclerView()
+                        initViewModel()
+                    }
+                }
+            }else{
+                EmployeeViewModel().apiRequest()
+                initRecyclerView()
+                initViewModel()
+            }
+        }
+    }
+
+    //    initialising the recyclerview
     private fun  initRecyclerView(){
         employee_recycler_view?.layoutManager = LinearLayoutManager(this)
         employeeAdapter = EmployeeAdapter(this,listener(),  listenerEmployLongClickListener())
@@ -120,19 +158,33 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun openAlertDialogue(employee: Employee){
+
         val builder = AlertDialog.Builder(this)
-        builder.setTitle("Delete employ!")
+        builder.setTitle("Delete employee!")
         builder.setMessage("Are you sure want to delete "+employee.NAME+" "+employee.SURNAME+"?")
 
         builder.setPositiveButton("Yes") { dialog, which ->
+            val viewModel:EmployeeViewModel = ViewModelProvider(this)[EmployeeViewModel::class.java]
+            viewModel.getDeleteEmployeeDataObserver().observe(this) {
 
-            Toast.makeText(applicationContext,
-                "Deleted successfully", Toast.LENGTH_SHORT).show()
+                if (it == null) {
+
+                    Toast.makeText(this, "Failed to delete employee", Toast.LENGTH_SHORT).show()
+
+                } else {
+                    Toast.makeText(applicationContext,
+                        it.code.toString(), Toast.LENGTH_SHORT).show()
+                    finish()
+                }
+            }
+
+            viewModel.deleteEmployeeRequest(employee._id)
+
         }
 
         builder.setNegativeButton("No") { dialog, which ->
             Toast.makeText(applicationContext,
-                android.R.string.no, Toast.LENGTH_SHORT).show()
+                employee.toString(), Toast.LENGTH_SHORT).show()
         }
 
         builder.show()
@@ -141,6 +193,7 @@ class MainActivity : AppCompatActivity() {
     private fun listenerEmployLongClickListener():EmployeeAdapter.OnItemLongClickLister{
         return object : EmployeeAdapter.OnItemLongClickLister{
             override fun onEmployeeLongClick(employee: Employee) :Boolean{
+
                 openAlertDialogue(employee)
                 return true
             }
