@@ -140,7 +140,7 @@ class MainActivity : AppCompatActivity() {
 
                 } else {
                     Toast.makeText(applicationContext,
-                        it.code.toString(), Toast.LENGTH_SHORT).show()
+                        "Deleted successfully", Toast.LENGTH_SHORT).show()
                     finish()
                 }
             }
@@ -151,7 +151,7 @@ class MainActivity : AppCompatActivity() {
 
         builder.setNegativeButton("No") { dialog, which ->
             Toast.makeText(applicationContext,
-                employee.toString(), Toast.LENGTH_SHORT).show()
+                "Cancelled", Toast.LENGTH_SHORT).show()
         }
 
         builder.show()
