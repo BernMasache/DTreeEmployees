@@ -31,10 +31,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <TextView
-                android:layout_weight="50"
+                android:layout_weight="30"
                 android:gravity="start"
                 android:textStyle="normal"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 android:layout_marginTop="10dp"
                 android:id="@+id/city"
                 android:layout_width="match_parent"
@@ -42,16 +42,23 @@
                 android:hint="city"
                 />
             <TextView
-                android:layout_weight="50"
-                android:gravity="end"
-                android:textStyle="normal"
-                android:textSize="16sp"
-                android:layout_marginTop="10dp"
-                android:id="@+id/age"
+                android:layout_weight="70"
+                android:background="@drawable/age_circle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="age"
+                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
+                android:gravity="center"
+                android:minWidth="24dp"
+                android:padding="10dp"
+                android:text="2"
+                android:textColor="#fff"
+                android:textSize="14sp"
+                android:id="@+id/age"
+                android:hint="Age"
                 />
+
+
         </LinearLayout>
 
     </LinearLayout>

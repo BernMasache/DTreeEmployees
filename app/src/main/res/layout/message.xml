@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="300dp"
+    android:padding="20dp"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:textStyle="bold"
+            android:id="@+id/message_box_header"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:gravity="start"
+            android:textAllCaps="true"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/message_box_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:textSize="20sp" />
+
+    </LinearLayout>
+    <View
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/purple_200"
+        />
+    <TextView
+        android:gravity="start"
+        android:textSize="12sp"
+        android:textColor="#454747"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:text="Well dedicated and contribution to our organization bring value to both product and staff market."
+        />
+</LinearLayout>
