@@ -21,6 +21,7 @@ class EmployeeViewModel: ViewModel() {
     fun getDeleteEmployeeDataObserver(): MutableLiveData<EmployeeResponse> {
         return deleteEmployeeLiveDataList
     }
+//    a request exposing all employees to the app instead of the mutable live data
     fun apiRequest(){
         val retrofit= RetrofitApiInstance.getRetrofitApiInstance()
         var apiService = retrofit.create(EmployeeRequestServiceInterface::class.java)
@@ -39,7 +40,7 @@ class EmployeeViewModel: ViewModel() {
 
         })
     }
-
+//search for an employ using a search query but it returns null so another custom search was made
     fun searchEmployeeApiRequest(searchText:String){
         val retrofit= RetrofitApiInstance.getRetrofitApiInstance()
         var apiService = retrofit.create(EmployeeRequestServiceInterface::class.java)
@@ -57,26 +58,4 @@ class EmployeeViewModel: ViewModel() {
         })
     }
 
-    fun deleteEmployeeRequest(employee_id:String?){
-        val retrofit= RetrofitApiInstance.getRetrofitApiInstance()
-        var apiService = retrofit.create(EmployeeRequestServiceInterface::class.java)
-        val call = apiService.deleteEmployee(employee_id!!)
-        call.enqueue(object : Callback<EmployeeResponse> {
-            override fun onResponse(
-                call: Call<EmployeeResponse>,
-                response: Response<EmployeeResponse>
-            ) {
-                if (response.isSuccessful){
-                    deleteEmployeeLiveDataList.postValue(response.body())
-                }else{
-                    deleteEmployeeLiveDataList.postValue(null)
-                }
-            }
-            override fun onFailure(call: Call<EmployeeResponse>, t: Throwable) {
-                deleteEmployeeLiveDataList.postValue(null)
-            }
-
-
-        })
-    }
 }

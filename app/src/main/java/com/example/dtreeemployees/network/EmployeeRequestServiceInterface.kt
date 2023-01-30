@@ -15,10 +15,6 @@ interface EmployeeRequestServiceInterface {
     fun getEmployees(): Call<List<Employee>>
 
     @Headers("Content-Type: application/json","x-apikey: 63722be4c890f30a8fd1f370","cache-control: no-cache")
-    @DELETE("group-1/{employee_id}")
-    fun deleteEmployee(@Path("employee_id") employee_id:String): Call<EmployeeResponse>
-
-    @Headers("Content-Type: application/json","x-apikey: 63722be4c890f30a8fd1f370","cache-control: no-cache")
     @GET("group-1/{employee_id}")
     fun searchEmployee(@Query("employee_id") employee_id:String): Call<List<Employee>>
 

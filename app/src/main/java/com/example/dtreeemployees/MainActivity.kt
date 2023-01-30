@@ -43,7 +43,7 @@ class MainActivity : AppCompatActivity() {
         initViewModel()
 
     }
-
+//searching for a march of an employ rom the already populated employees model view
     private fun searchEmployeeFunction(searchText: String?) {
 
         if (searchText!!.isNotEmpty()){
@@ -99,13 +99,12 @@ class MainActivity : AppCompatActivity() {
         }
         viewModel.apiRequest()
     }
+//    implementing the onclick listener from the adapter class to detect a clicked employ from the
+//    recyclerview and display detail in bottom dialogue box
     private fun listener():EmployeeAdapter.OnItemClickLister{
         return object : EmployeeAdapter.OnItemClickLister {
             override fun onEmployeeClick(employee: Employee) {
                 openBottomDialogue(employee)
-            }
-            private fun BottomSheetDialog(onItemClickLister: EmployeeAdapter.OnItemClickLister) {
-                val view = layoutInflater.inflate(R.layout.message, null)
             }
         }
     }
@@ -145,7 +144,7 @@ class MainActivity : AppCompatActivity() {
                 }
             }
 
-            viewModel.deleteEmployeeRequest(employee._id)
+//            viewModel.deleteEmployeeRequest(employee._id)
 
         }
 
